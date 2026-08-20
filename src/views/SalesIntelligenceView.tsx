@@ -9,6 +9,7 @@ import {
   Clock, 
   Sparkles, 
   ArrowRight, 
+  ArrowLeft,
   Award, 
   PlusCircle, 
   Filter, 
@@ -43,6 +44,7 @@ export interface SalesIntelligenceViewProps {
   onOpenAddModal: () => void;
   onSelectSchool?: (school: School) => void;
   onOpenDossier?: (school: School) => void;
+  onBackToDashboard?: () => void;
 }
 
 export type PipelineStage = 'Canvassing' | 'Visitasi' | 'Presentasi' | 'Deal';
@@ -73,7 +75,8 @@ export const SalesIntelligenceView: React.FC<SalesIntelligenceViewProps> = ({
   currentRole,
   onOpenAddModal,
   onSelectSchool,
-  onOpenDossier
+  onOpenDossier,
+  onBackToDashboard
 }) => {
   // State for search and filters
   const [searchQuery, setSearchQuery] = useState('');
@@ -421,8 +424,34 @@ export const SalesIntelligenceView: React.FC<SalesIntelligenceViewProps> = ({
   };
 
   return (
-    <div id="sales-intelligence-view" className="space-y-8 pb-14 max-w-7xl mx-auto">
+    <div id="sales-intelligence-view" className="space-y-6 pb-14 max-w-7xl mx-auto">
       
+      {/* 0. BREADCRUMB & BACK BUTTON */}
+      {onBackToDashboard && (
+        <div className="flex items-center justify-between gap-3 pt-1">
+          <button
+            id="sales-back-to-dashboard-btn"
+            onClick={onBackToDashboard}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 hover:text-[#0D5C75] border border-slate-200 shadow-2xs hover:shadow-xs transition-all cursor-pointer group active:scale-95"
+          >
+            <ArrowLeft className="w-4 h-4 text-slate-500 group-hover:text-[#0D5C75] group-hover:-translate-x-1 transition-transform" />
+            <span>← Kembali ke Dashboard Utama</span>
+          </button>
+
+          <div className="text-xs text-slate-500 hidden sm:flex items-center gap-2 font-medium">
+            <span>Navigasi:</span>
+            <button 
+              onClick={onBackToDashboard}
+              className="text-slate-600 hover:text-[#0D5C75] font-semibold underline decoration-slate-300 hover:decoration-[#0D5C75] cursor-pointer"
+            >
+              Executive Summary
+            </button>
+            <span>/</span>
+            <span className="font-bold text-[#0D5C75]">Sales Intelligence</span>
+          </div>
+        </div>
+      )}
+
       {/* 1. HERO TITLE & ACTION BAR */}
       <div className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-7 shadow-xs">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">

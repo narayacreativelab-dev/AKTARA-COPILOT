@@ -977,6 +977,7 @@ export default function App() {
               onOpenAddModal={() => setIsAddModalOpen(true)}
               onSelectSchool={handleSelectSchool}
               onOpenDossier={handleOpenPitch}
+              onBackToDashboard={() => setCurrentTab('summary')}
             />
           )}
 

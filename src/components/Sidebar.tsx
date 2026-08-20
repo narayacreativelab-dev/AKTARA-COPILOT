@@ -172,11 +172,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
               return (
                 <button
                   key={item.id}
+                  id={`nav-tab-${item.id}`}
                   onClick={() => {
                     setCurrentTab(item.id);
                     onCloseMobile();
                   }}
-                  className={`w-full text-left px-3 py-2.5 rounded-xl flex items-center justify-between transition-all group ${
+                  className={`w-full text-left px-3 py-2.5 rounded-xl flex items-center justify-between transition-all group cursor-pointer active:scale-[0.99] ${
                     isActive
                       ? 'bg-[#EBF4F7] text-[#0D5C75] font-semibold border border-[#CCE3EA] shadow-2xs'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-transparent'
