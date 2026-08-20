@@ -212,6 +212,19 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             ) : null}
 
+            {/* Input Canvassing Button for Role Tim */}
+            {currentRole === 'role_tim' && onOpenAddModal && (
+              <button
+                onClick={onOpenAddModal}
+                title="Input Canvassing / Tambah Sekolah Baru Lapangan"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg transition-colors cursor-pointer shrink-0 shadow-2xs"
+              >
+                <Plus className="w-3.5 h-3.5 text-emerald-600" />
+                <span className="hidden sm:inline">Input Canvassing</span>
+                <span className="sm:hidden">+ Canvassing</span>
+              </button>
+            )}
+
             {/* Super Admin Exclusive Action Buttons */}
             {currentRole === 'super_admin' && (
               <>
@@ -226,6 +239,7 @@ export const Header: React.FC<HeaderProps> = ({
 
                 <button
                   onClick={onOpenAddModal}
+                  title="Tambah Data Sekolah Baru"
                   className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#0D5C75] bg-[#EBF4F7] hover:bg-[#D8ECF2] border border-[#CCE3EA] rounded-lg transition-colors cursor-pointer shrink-0"
                 >
                   <Plus className="w-3.5 h-3.5" />

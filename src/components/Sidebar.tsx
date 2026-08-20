@@ -10,7 +10,8 @@ import {
   Users,
   Sliders,
   HardDrive,
-  LogOut
+  LogOut,
+  PlusCircle
 } from 'lucide-react';
 import { UserRole, AppBrandingConfig, AuthUser } from '../types';
 
@@ -23,6 +24,7 @@ interface SidebarProps {
   currentRole: UserRole;
   onOpenSettings: () => void;
   onOpenGoogleDrive?: () => void;
+  onOpenAddModal?: () => void;
   isOpenMobile: boolean;
   onCloseMobile: () => void;
   branding?: AppBrandingConfig;
@@ -38,6 +40,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   currentRole,
   onOpenSettings,
   onOpenGoogleDrive,
+  onOpenAddModal,
   isOpenMobile,
   onCloseMobile,
   branding,
@@ -192,6 +195,46 @@ export const Sidebar: React.FC<SidebarProps> = ({
             })}
           </nav>
         </div>
+
+        {/* Section: Operasional Canvassing Lapangan (Untuk Role Tim & Super Admin) */}
+        {onOpenAddModal && (
+          <div className="pt-2 border-t border-slate-100">
+            <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2 flex items-center justify-between">
+              <span>Input Data Lapangan</span>
+              <span className="text-[9.5px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                CANVASSING
+              </span>
+            </div>
+
+            <button
+              onClick={() => {
+                onOpenAddModal();
+                onCloseMobile();
+              }}
+              title="Buka Form Input Canvassing & Tambah Sekolah Baru"
+              className="w-full text-left px-3 py-2.5 rounded-xl flex items-center justify-between transition-all group bg-emerald-50/70 hover:bg-emerald-100/90 text-emerald-950 border border-emerald-200 shadow-2xs hover:shadow-xs cursor-pointer"
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="p-1.5 rounded-lg bg-emerald-600 text-white shadow-xs group-hover:scale-105 transition-transform shrink-0">
+                  <PlusCircle className="w-4 h-4" />
+                </div>
+                <div className="truncate">
+                  <div className="text-xs font-bold leading-tight truncate text-emerald-950 flex items-center gap-1.5">
+                    <span>Input Canvassing</span>
+                    <span className="text-[9px] bg-emerald-200 text-emerald-800 font-extrabold px-1.5 py-0.2 rounded">+ Baru</span>
+                  </div>
+                  <div className="text-[10.5px] text-emerald-700/80 truncate font-medium">
+                    + Tambah Sekolah Baru
+                  </div>
+                </div>
+              </div>
+
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-600 text-white shadow-2xs shrink-0">
+                Input
+              </span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Sidebar Footer: Active Role & Pengaturan Launcher */}

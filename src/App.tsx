@@ -47,7 +47,8 @@ import {
   Compass,
   Building2,
   Users,
-  Flame
+  Flame,
+  PlusCircle
 } from 'lucide-react';
 
 const DEFAULT_FILTER: RegionFilter = {
@@ -744,7 +745,7 @@ export default function App() {
                   </span>
                 </div>
 
-                <div className={`grid grid-cols-1 sm:grid-cols-2 ${currentRole === 'super_admin' ? 'lg:grid-cols-4' : 'lg:grid-cols-2'} gap-3`}>
+                <div className={`grid grid-cols-1 sm:grid-cols-2 ${currentRole === 'super_admin' ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-3`}>
                   
                   <div 
                     onClick={() => setCurrentTab('map')}
@@ -787,6 +788,30 @@ export default function App() {
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
+
+                  {currentRole === 'role_tim' && (
+                    <div 
+                      onClick={() => setIsAddModalOpen(true)}
+                      className="bg-emerald-50/70 border border-emerald-200/90 hover:border-emerald-500 rounded-xl p-4 cursor-pointer transition-all shadow-2xs hover:shadow-xs group flex flex-col justify-between"
+                    >
+                      <div>
+                        <div className="w-9 h-9 rounded-lg bg-emerald-600 text-white flex items-center justify-center mb-3 group-hover:scale-105 transition-transform shadow-xs">
+                          <PlusCircle className="w-5 h-5" />
+                        </div>
+                        <h4 className="font-bold text-sm text-emerald-950 group-hover:text-emerald-700 transition-colors flex items-center gap-1.5">
+                          <span>Input Canvassing</span>
+                          <span className="text-[9px] bg-emerald-200 text-emerald-800 font-extrabold px-1.5 py-0.2 rounded">+ Baru</span>
+                        </h4>
+                        <p className="text-xs text-slate-600 mt-1">
+                          Entri data sekolah baru hasil canvassing lapangan langsung tersinkron ke database Cloud.
+                        </p>
+                      </div>
+                      <div className="mt-4 pt-3 border-t border-emerald-200/70 flex items-center justify-between text-xs font-bold text-emerald-700">
+                        <span>Buka Form Input</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </div>
+                  )}
 
                   {currentRole === 'super_admin' && (
                     <>
