@@ -26,6 +26,11 @@ export interface School {
   email?: string;
   website?: string;
   partnershipStatus: 'Belum Dikunjungi' | 'Prospek' | 'Dijadwalkan' | 'Mitra Aktif';
+  pipelineStage?: 'Canvassing' | 'Visitasi' | 'Presentasi' | 'Deal';
+  surveyorName?: string;
+  surveyorId?: string;
+  dealValueEstimate?: number;
+  lastContactDate?: string;
   priorityScore: number; // 1 to 100
   aktaraCompatibility: {
     fitScore: number; // 1 to 100
@@ -131,6 +136,7 @@ export interface RolePermissions {
   canAccessSummary: boolean;
   canAccessMap: boolean;
   canAccessAnalytics: boolean;
+  canAccessSales: boolean;
   canAccessTable: boolean;
   canAccessCopilot: boolean;
   canAddSchool: boolean;

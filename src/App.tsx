@@ -7,6 +7,7 @@ import { ExecutiveSummaryCharts } from './components/ExecutiveSummaryCharts';
 import { MapView } from './components/MapView';
 import { AnalyticsView } from './components/AnalyticsView';
 import { TableView } from './components/TableView';
+import { SalesPerformanceDashboard } from './components/SalesPerformanceDashboard';
 import { AiCopilotDrawer } from './components/AiCopilotDrawer';
 import { SchoolDossierModal } from './components/SchoolDossierModal';
 import { AddSchoolModal } from './components/AddSchoolModal';
@@ -48,7 +49,8 @@ import {
   Building2,
   Users,
   Flame,
-  PlusCircle
+  PlusCircle,
+  Trophy
 } from 'lucide-react';
 
 const DEFAULT_FILTER: RegionFilter = {
@@ -78,7 +80,7 @@ export default function App() {
   });
 
   const [filter, setFilter] = useState<RegionFilter>(DEFAULT_FILTER);
-  const [currentTab, setCurrentTab] = useState<'summary' | 'map' | 'analytics' | 'table' | 'copilot'>('summary');
+  const [currentTab, setCurrentTab] = useState<'summary' | 'map' | 'analytics' | 'sales' | 'table' | 'copilot'>('summary');
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [selectedSchool, setSelectedSchool] = useState<School | null>(null);
   const [isDossierOpen, setIsDossierOpen] = useState(false);
@@ -745,8 +747,30 @@ export default function App() {
                   </span>
                 </div>
 
-                <div className={`grid grid-cols-1 sm:grid-cols-2 ${currentRole === 'super_admin' ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-3`}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                   
+                  <div 
+                    onClick={() => setCurrentTab('sales')}
+                    className="bg-gradient-to-br from-amber-50/60 to-white border border-amber-200/90 hover:border-amber-500 rounded-xl p-4 cursor-pointer transition-all shadow-2xs hover:shadow-xs group flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="w-9 h-9 rounded-lg bg-amber-500 text-white flex items-center justify-center mb-3 group-hover:scale-105 transition-transform shadow-xs">
+                        <Trophy className="w-5 h-5 text-white" />
+                      </div>
+                      <h4 className="font-bold text-sm text-slate-900 group-hover:text-amber-700 transition-colors flex items-center gap-1.5">
+                        <span>Pencapaian Sales</span>
+                        <span className="text-[9px] bg-amber-200 text-amber-900 font-extrabold px-1.5 py-0.2 rounded">TOP</span>
+                      </h4>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Leaderboard tim lapangan, pipeline funnel konversi, dan progress kuota target wilayah.
+                      </p>
+                    </div>
+                    <div className="mt-4 pt-3 border-t border-amber-200/60 flex items-center justify-between text-xs font-bold text-amber-800">
+                      <span>Buka Leaderboard</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+
                   <div 
                     onClick={() => setCurrentTab('map')}
                     className="bg-white border border-slate-200/90 hover:border-[#0D5C75] rounded-xl p-4 cursor-pointer transition-all shadow-2xs hover:shadow-xs group flex flex-col justify-between"
@@ -789,7 +813,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  {currentRole === 'role_tim' && (
+                  {currentRole === 'role_tim' ? (
                     <div 
                       onClick={() => setIsAddModalOpen(true)}
                       className="bg-emerald-50/70 border border-emerald-200/90 hover:border-emerald-500 rounded-xl p-4 cursor-pointer transition-all shadow-2xs hover:shadow-xs group flex flex-col justify-between"
@@ -811,53 +835,27 @@ export default function App() {
                         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
-                  )}
-
-                  {currentRole === 'super_admin' && (
-                    <>
-                      <div 
-                        onClick={() => setCurrentTab('table')}
-                        className="bg-white border border-slate-200/90 hover:border-[#0D5C75] rounded-xl p-4 cursor-pointer transition-all shadow-2xs hover:shadow-xs group flex flex-col justify-between"
-                      >
-                        <div>
-                          <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 group-hover:bg-[#0D5C75] group-hover:text-white transition-colors">
-                            <TableIcon className="w-5 h-5" />
-                          </div>
-                          <h4 className="font-bold text-sm text-slate-900 group-hover:text-[#0D5C75] transition-colors">
-                            Database Direktori
-                          </h4>
-                          <p className="text-xs text-slate-500 mt-1">
-                            Direktori lengkap {filteredSchools.length} sekolah, kontak kepala sekolah, dan pitch generator.
-                          </p>
+                  ) : (
+                    <div 
+                      onClick={() => setCurrentTab('table')}
+                      className="bg-white border border-slate-200/90 hover:border-[#0D5C75] rounded-xl p-4 cursor-pointer transition-all shadow-2xs hover:shadow-xs group flex flex-col justify-between"
+                    >
+                      <div>
+                        <div className="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3 group-hover:bg-[#0D5C75] group-hover:text-white transition-colors">
+                          <TableIcon className="w-5 h-5" />
                         </div>
-                        <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-[#0D5C75]">
-                          <span>Lihat Database</span>
-                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                        </div>
+                        <h4 className="font-bold text-sm text-slate-900 group-hover:text-[#0D5C75] transition-colors">
+                          Database Direktori
+                        </h4>
+                        <p className="text-xs text-slate-500 mt-1">
+                          Direktori lengkap {filteredSchools.length} sekolah, kontak kepala sekolah, dan pitch generator.
+                        </p>
                       </div>
-
-                      <div 
-                        onClick={() => setIsCopilotOpen(true)}
-                        className="bg-gradient-to-br from-[#FAF3DA] to-white border border-[#F2E3B1] hover:border-[#D4AF37] rounded-xl p-4 cursor-pointer transition-all shadow-2xs hover:shadow-xs group flex flex-col justify-between"
-                      >
-                        <div>
-                          <div className="w-9 h-9 rounded-lg bg-[#D4AF37] text-white flex items-center justify-center mb-3 shadow-xs">
-                            <Bot className="w-5 h-5 text-white" />
-                          </div>
-                          <h4 className="font-bold text-sm text-[#07394A] group-hover:text-[#947518] transition-colors flex items-center gap-1.5">
-                            <span>AKTARA Copilot</span>
-                            <span className="text-[9px] bg-[#947518] text-white font-bold px-1.5 py-0.2 rounded">AI</span>
-                          </h4>
-                          <p className="text-xs text-slate-600 mt-1">
-                            Konsultasi strategi penetrasi kemitraan dan eksekusi instruksi kustom dengan Gemini AI.
-                          </p>
-                        </div>
-                        <div className="mt-4 pt-3 border-t border-[#F2E3B1]/80 flex items-center justify-between text-xs font-bold text-[#947518]">
-                          <span>Konsultasi AI</span>
-                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                        </div>
+                      <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-[#0D5C75]">
+                        <span>Lihat Database</span>
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                       </div>
-                    </>
+                    </div>
                   )}
 
                 </div>
@@ -967,6 +965,18 @@ export default function App() {
             <AnalyticsView
               schools={filteredSchools}
               onSelectSchool={handleSelectSchool}
+            />
+          )}
+
+          {currentTab === 'sales' && (
+            <SalesPerformanceDashboard
+              schools={schools}
+              teamMembers={teamMembers}
+              currentUser={currentUser}
+              currentRole={currentRole}
+              onOpenAddModal={() => setIsAddModalOpen(true)}
+              onSelectSchool={handleSelectSchool}
+              onOpenDossier={handleOpenPitch}
             />
           )}
 
@@ -1111,6 +1121,8 @@ export default function App() {
         onClose={() => setIsAddModalOpen(false)}
         onAddSchool={handleAddSchool}
         onOpenBulkUpload={() => setIsBulkUploadOpen(true)}
+        currentUser={currentUser}
+        teamMembers={teamMembers}
       />
 
       <BulkUploadModal

@@ -13,7 +13,7 @@ import {
   ShieldCheck,
   Sparkles
 } from 'lucide-react';
-import { School } from '../types';
+import { School, AuthUser, TeamMember } from '../types';
 import { REGIONS_DATA } from '../data/schoolsData';
 
 interface AddSchoolModalProps {
@@ -21,13 +21,17 @@ interface AddSchoolModalProps {
   onClose: () => void;
   onAddSchool: (newSchool: School) => void;
   onOpenBulkUpload?: () => void;
+  currentUser?: AuthUser | null;
+  teamMembers?: TeamMember[];
 }
 
 export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
   isOpen,
   onClose,
   onAddSchool,
-  onOpenBulkUpload
+  onOpenBulkUpload,
+  currentUser,
+  teamMembers = []
 }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -47,8 +51,20 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
     principal: '',
     phone: '',
     majorsString: 'Teknik Komputer dan Jaringan, Rekayasa Perangkat Lunak, Akuntansi',
-    partnershipStatus: 'Prospek' as School['partnershipStatus']
+    partnershipStatus: 'Prospek' as School['partnershipStatus'],
+    pipelineStage: 'Canvassing' as 'Canvassing' | 'Visitasi' | 'Presentasi' | 'Deal',
+    surveyorName: currentUser?.name || 'Tim Lapangan AKTARA',
+    notes: ''
   });
+
+  useEffect(() => {
+    if (currentUser?.name && !formData.name) {
+      setFormData(prev => ({
+        ...prev,
+        surveyorName: currentUser.name
+      }));
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -105,12 +121,17 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
       principal: formData.principal || 'Kepala Sekolah',
       phone: formData.phone || '(0262) 123456',
       partnershipStatus: formData.partnershipStatus,
+      pipelineStage: formData.pipelineStage,
+      surveyorName: formData.surveyorName || (currentUser?.name ?? 'Tim Lapangan AKTARA'),
+      surveyorId: currentUser?.id,
+      notes: formData.notes,
+      createdAt: new Date().toISOString(),
       priorityScore: 85,
       aktaraCompatibility: {
         fitScore: 88,
         recommendedPrograms: ['AKTARA AI Literacy Workshop', 'Vocational Industry Linkage'],
         strengths: ['Potensi ekspansi wilayah baru', 'Kebutuhan adaptasi kurikulum industri tinggi'],
-        notes: 'Data sekolah ditambahkan oleh staf representatif AKTARA.'
+        notes: `Data sekolah ditambahkan oleh ${formData.surveyorName || 'Tim Lapangan AKTARA'}.`
       }
     };
 
@@ -292,17 +313,67 @@ export const AddSchoolModal: React.FC<AddSchoolModalProps> = ({
             </div>
           </div>
 
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
+              <label className="font-semibold text-slate-700 block">Tahapan Pipeline Sales:</label>
+              <select
+                value={formData.pipelineStage}
+                onChange={(e) => {
+                  const stage = e.target.value as 'Canvassing' | 'Visitasi' | 'Presentasi' | 'Deal';
+                  let status: School['partnershipStatus'] = 'Belum Dikunjungi';
+                  if (stage === 'Canvassing') status = 'Belum Dikunjungi';
+                  else if (stage === 'Visitasi') status = 'Dijadwalkan';
+                  else if (stage === 'Presentasi') status = 'Prospek';
+                  else if (stage === 'Deal') status = 'Mitra Aktif';
+                  setFormData(p => ({ ...p, pipelineStage: stage, partnershipStatus: status }));
+                }}
+                className="w-full bg-white border border-slate-300 rounded-md p-1.5 font-bold text-[#0D5C75]"
+              >
+                <option value="Canvassing">1. Canvassing (Baru Diidentifikasi)</option>
+                <option value="Visitasi">2. Visitasi (Telah Dijadwalkan/Kunjungan)</option>
+                <option value="Presentasi">3. Presentasi (Audiensi Prospek)</option>
+                <option value="Deal">4. Deal / MoU (Mitra Aktif)</option>
+              </select>
+            </div>
+
+            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200 space-y-1">
+              <label className="font-semibold text-slate-700 block">PIC / Surveyor Canvassing:</label>
+              <input
+                type="text"
+                list="team-members-list"
+                value={formData.surveyorName}
+                onChange={(e) => setFormData(p => ({ ...p, surveyorName: e.target.value }))}
+                placeholder="Nama PIC / Sales Rep"
+                className="w-full bg-white border border-slate-300 rounded-md p-1.5 font-semibold text-slate-800"
+              />
+              <datalist id="team-members-list">
+                {currentUser?.name && <option value={currentUser.name} />}
+                {teamMembers.map(m => (
+                  <option key={m.id} value={m.name} />
+                ))}
+              </datalist>
+            </div>
+          </div>
+
           <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between">
             <span className="font-semibold text-slate-700">Status Kemitraan:</span>
             <select
               value={formData.partnershipStatus}
-              onChange={(e) => setFormData(p => ({ ...p, partnershipStatus: e.target.value as any }))}
+              onChange={(e) => {
+                const status = e.target.value as School['partnershipStatus'];
+                let stage: 'Canvassing' | 'Visitasi' | 'Presentasi' | 'Deal' = 'Canvassing';
+                if (status === 'Belum Dikunjungi') stage = 'Canvassing';
+                else if (status === 'Dijadwalkan') stage = 'Visitasi';
+                else if (status === 'Prospek') stage = 'Presentasi';
+                else if (status === 'Mitra Aktif') stage = 'Deal';
+                setFormData(p => ({ ...p, partnershipStatus: status, pipelineStage: stage }));
+              }}
               className="bg-white border border-slate-300 rounded-md p-1 font-semibold"
             >
-              <option value="Prospek">Prospek</option>
-              <option value="Dijadwalkan">Dijadwalkan</option>
-              <option value="Mitra Aktif">Mitra Aktif</option>
-              <option value="Belum Dikunjungi">Belum Dikunjungi</option>
+              <option value="Belum Dikunjungi">Belum Dikunjungi (Canvassing)</option>
+              <option value="Dijadwalkan">Dijadwalkan (Visitasi)</option>
+              <option value="Prospek">Prospek (Presentasi)</option>
+              <option value="Mitra Aktif">Mitra Aktif (Deal)</option>
             </select>
           </div>
 

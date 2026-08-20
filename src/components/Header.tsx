@@ -21,12 +21,13 @@ import {
   HardDrive,
   LogOut,
   UserCheck,
-  Flame
+  Flame,
+  Trophy
 } from 'lucide-react';
 import { RegionFilter, UserRole, AppBrandingConfig, AuthUser } from '../types';
 
 interface HeaderProps {
-  currentTab: 'summary' | 'map' | 'analytics' | 'table' | 'copilot';
+  currentTab: 'summary' | 'map' | 'analytics' | 'sales' | 'table' | 'copilot';
   filteredCount: number;
   totalCount: number;
   filter: RegionFilter;
@@ -75,15 +76,19 @@ export const Header: React.FC<HeaderProps> = ({
         return { title: 'Peta Spasial (GIS)', icon: MapPin, desc: 'Pemetaan radius sekolah, sebaran populasi siswa, dan rute kemitraan' };
       case 'analytics':
         return { title: 'Data Analytics (BI)', icon: BarChart3, desc: 'Distribusi statistik, rasio gender, akreditasi, dan segmentasi kejuruan' };
+      case 'sales':
+        return { title: 'Pencapaian Sales & Pipeline', icon: Trophy, desc: 'Leaderboard performa tim, konversi pipeline kemitraan, dan progres target wilayah' };
       case 'table':
         return { title: 'Database Direktori Sekolah', icon: TableIcon, desc: 'Tabel data komprehensif, kontak kepala sekolah, dan status kemitraan' };
       case 'copilot':
         return { title: 'AI Intelligence Brief & Copilot', icon: Sparkles, desc: 'Analisis demografi otomatis, ringkasan eksekutif, dan rekomendasi strategis' };
+      default:
+        return { title: 'Dashboard Executive Summary', icon: LayoutDashboard, desc: 'Ringkasan KPI demografi, penetrasi pasar, dan rekomendasi strategis AI' };
     }
   };
 
   const currentTabInfo = getTabInfo();
-  const Icon = currentTabInfo.icon;
+  const Icon = currentTabInfo.icon || LayoutDashboard;
 
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-20 shadow-2xs">

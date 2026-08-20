@@ -11,13 +11,14 @@ import {
   Sliders,
   HardDrive,
   LogOut,
-  PlusCircle
+  PlusCircle,
+  Trophy
 } from 'lucide-react';
 import { UserRole, AppBrandingConfig, AuthUser } from '../types';
 
 interface SidebarProps {
-  currentTab: 'summary' | 'map' | 'analytics' | 'table' | 'copilot';
-  setCurrentTab: (tab: 'summary' | 'map' | 'analytics' | 'table' | 'copilot') => void;
+  currentTab: 'summary' | 'map' | 'analytics' | 'sales' | 'table' | 'copilot';
+  setCurrentTab: (tab: 'summary' | 'map' | 'analytics' | 'sales' | 'table' | 'copilot') => void;
   filteredCount: number;
   totalCount: number;
   onOpenCopilot: () => void;
@@ -75,6 +76,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
       icon: BarChart3,
       badge: null,
       color: 'text-indigo-600',
+      allowedRoles: ['super_admin', 'role_tim']
+    },
+    {
+      id: 'sales' as const,
+      label: 'Pencapaian Sales',
+      subtitle: 'Leaderboard & Pipeline',
+      icon: Trophy,
+      badge: 'LEADERBOARD',
+      badgeColor: 'bg-amber-100 text-amber-800 border border-amber-300',
+      color: 'text-amber-600',
       allowedRoles: ['super_admin', 'role_tim']
     },
     {
