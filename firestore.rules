@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isValidId(docId) {
+      return docId is string && docId.size() > 0 && docId.size() <= 128 && docId.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // 1. Schools Collection
+    match /schools/{schoolId} {
+      allow read: if true;
+      allow create: if isSignedIn() && isValidId(schoolId) && request.resource.data.name is string;
+      allow update: if isSignedIn() && isValidId(schoolId);
+      allow delete: if isSignedIn() && isValidId(schoolId);
+    }
+
+    // 2. Team Members Collection
+    match /teamMembers/{memberId} {
+      allow read: if true;
+      allow create, update, delete: if isSignedIn() && isValidId(memberId);
+    }
+
+    // 3. Users Collection (RBAC & User Management)
+    match /users/{userId} {
+      allow read: if true;
+      allow create, update, delete: if isSignedIn() && isValidId(userId);
+    }
+
+    // 4. Settings & Branding Configuration
+    match /settings/{settingId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if isSignedIn() && isValidId(settingId);
+    }
+
+    match /config/{configId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if isSignedIn() && isValidId(configId);
+    }
+  }
+}

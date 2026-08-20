@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --brand-teal: #0D5C75;
+    --brand-teal-dark: #07394A;
+    --brand-teal-hover: #0A4E63;
+    --brand-teal-light: #EBF4F7;
+    --brand-teal-subtle: #F2F8FA;
+    --brand-gold: #D4AF37;
+    --brand-gold-dark: #B38E22;
+    --brand-gold-light: #FDF9EC;
+    --brand-gold-subtle: #FAF3DA;
+  }
+
+  html {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    letter-spacing: normal;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #F8FAFC;
+    color: #0F172A;
+    line-height: 1.5;
+  }
+
+  p, span, li, label, input, button, select, textarea {
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+}
+
+/* Brand Utility Classes */
+.bg-brand-teal { background-color: #0D5C75; }
+.bg-brand-teal-dark { background-color: #07394A; }
+.bg-brand-teal-hover { background-color: #0A4E63; }
+.bg-brand-teal-light { background-color: #EBF4F7; }
+.bg-brand-teal-subtle { background-color: #F2F8FA; }
+
+.text-brand-teal { color: #0D5C75; }
+.text-brand-teal-dark { color: #07394A; }
+.border-brand-teal { border-color: #0D5C75; }
+.border-brand-teal-light { border-color: #CCE3EA; }
+
+.bg-brand-gold { background-color: #D4AF37; }
+.bg-brand-gold-dark { background-color: #B38E22; }
+.bg-brand-gold-light { background-color: #FDF9EC; }
+.bg-brand-gold-subtle { background-color: #FAF3DA; }
+
+.text-brand-gold { color: #D4AF37; }
+.text-brand-gold-dark { color: #B38E22; }
+.border-brand-gold { border-color: #D4AF37; }
+.border-brand-gold-light { border-color: #F2E3B1; }
+
+/* Custom Scrollbar for sleek BI look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Leaflet map popup tweaks */
+.leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(13, 92, 117, 0.15), 0 8px 10px -6px rgba(13, 92, 117, 0.1);
+  border: 1px solid #E2E8F0;
+}
+.leaflet-popup-content {
+  margin: 0;
+  line-height: 1.4;
+}
+.leaflet-container {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+

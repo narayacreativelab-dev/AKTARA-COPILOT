@@ -1,0 +1,111 @@
+{
+  "entities": {
+    "School": {
+      "title": "School",
+      "description": "Educational institution profile (SMK/SMA) with GIS coordinates, demographic statistics, vocational majors, and partnership pipeline status.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique school ID" },
+        "npsn": { "type": "string", "description": "National School Identification Number" },
+        "name": { "type": "string", "description": "Official name of the school" },
+        "type": { "type": "string", "enum": ["SMK", "SMA"], "description": "School level/type" },
+        "status": { "type": "string", "enum": ["Negeri", "Swasta"], "description": "Public or private status" },
+        "accreditation": { "type": "string", "enum": ["A", "B", "C", "Belum Terakreditasi"], "description": "Accreditation grade" },
+        "address": { "type": "string", "description": "Full street address" },
+        "subDistrict": { "type": "string", "description": "Kecamatan / Sub-district" },
+        "cityDistrict": { "type": "string", "description": "Kabupaten/Kota" },
+        "province": { "type": "string", "description": "Provinsi" },
+        "latitude": { "type": "number", "description": "GIS Latitude coordinate" },
+        "longitude": { "type": "number", "description": "GIS Longitude coordinate" },
+        "totalStudents": { "type": "number", "description": "Total student population" },
+        "maleStudents": { "type": "number", "description": "Male student count" },
+        "femaleStudents": { "type": "number", "description": "Female student count" },
+        "principal": { "type": "string", "description": "School principal / PIC name" },
+        "contactPhone": { "type": "string", "description": "Official phone number" },
+        "contactEmail": { "type": "string", "description": "Official email address" },
+        "majors": { "type": "array", "description": "List of vocational majors and student distributions" },
+        "priorityScore": { "type": "number", "description": "AKTARA strategic priority index (0-100)" },
+        "partnershipStatus": { "type": "string", "enum": ["Prospek Baru", "Dijadwalkan", "Dalam Negosiasi", "Mitra Aktif", "Alumni Program", "Tertunda"], "description": "Sales pipeline and partnership status" },
+        "lastVisited": { "type": "string", "description": "ISO date of last field visitation" },
+        "notes": { "type": "string", "description": "Internal notes and visitation records" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" },
+        "updatedAt": { "type": "string", "description": "Last updated timestamp" }
+      },
+      "required": ["id", "npsn", "name", "type", "status", "cityDistrict", "subDistrict", "partnershipStatus"]
+    },
+    "TeamMember": {
+      "title": "TeamMember",
+      "description": "AKTARA Hub staff and team members with assigned roles and permission tiers.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique member identifier" },
+        "name": { "type": "string", "description": "Full staff name" },
+        "email": { "type": "string", "format": "email", "description": "Staff work email" },
+        "role": { "type": "string", "enum": ["super_admin", "role_tim", "tim_lapangan", "surveyor"], "description": "Assigned access role" },
+        "department": { "type": "string", "description": "Assigned department / operational area" },
+        "avatarBg": { "type": "string", "description": "Color theme for profile avatar" },
+        "createdAt": { "type": "string", "description": "Creation timestamp" }
+      },
+      "required": ["id", "name", "email", "role"]
+    },
+    "AppUserRecord": {
+      "title": "AppUserRecord",
+      "description": "RBAC user account profile synced with Firebase Auth and Firestore.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "User unique ID (UID)" },
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "name": { "type": "string", "description": "Full display name" },
+        "email": { "type": "string", "format": "email", "description": "User email address" },
+        "role": { "type": "string", "enum": ["super_admin", "role_tim", "tim_lapangan", "surveyor"], "description": "Assigned RBAC role" },
+        "department": { "type": "string", "description": "Assigned department / field division" },
+        "status": { "type": "string", "enum": ["active", "inactive"], "description": "Account status" },
+        "createdAt": { "type": "string", "description": "ISO creation timestamp" },
+        "updatedAt": { "type": "string", "description": "ISO last update timestamp" }
+      },
+      "required": ["id", "uid", "name", "email", "role", "status"]
+    },
+    "AppBrandingConfig": {
+      "title": "AppBrandingConfig",
+      "description": "Global application branding, titles, banner, and agency identity settings.",
+      "type": "object",
+      "properties": {
+        "appTitle": { "type": "string", "description": "Custom application headline title" },
+        "appTagline": { "type": "string", "description": "Application subtitle tagline" },
+        "badgeText": { "type": "string", "description": "Regional / version badge indicator" },
+        "logoUrl": { "type": "string", "description": "Custom agency logo image URL or base64 data" },
+        "bannerUrl": { "type": "string", "description": "Custom banner image URL or base64 data" },
+        "bannerImageUrl": { "type": "string", "description": "Alternative banner image URL or base64 data" },
+        "bannerHeadline": { "type": "string", "description": "Banner headline text" },
+        "bannerSubheadline": { "type": "string", "description": "Banner subheadline / description text" },
+        "organizationName": { "type": "string", "description": "Official parent organization name" },
+        "primaryColor": { "type": "string", "description": "Primary brand theme hex code" },
+        "accentColor": { "type": "string", "description": "Accent gold theme hex code" },
+        "updatedAt": { "type": "string", "description": "Last modified timestamp" }
+      },
+      "required": ["appTitle", "organizationName"]
+    }
+  },
+  "firestore": {
+    "/schools/{schoolId}": {
+      "schema": "School",
+      "description": "Geospatial directory of vocational and senior high schools with demographic and partnership statistics."
+    },
+    "/teamMembers/{memberId}": {
+      "schema": "TeamMember",
+      "description": "AKTARA Hub staff and operational surveyor team directory."
+    },
+    "/users/{userId}": {
+      "schema": "AppUserRecord",
+      "description": "RBAC user profiles synced with Firebase Auth and Firestore."
+    },
+    "/settings/branding": {
+      "schema": "AppBrandingConfig",
+      "description": "Global persistent custom white-label branding, agency logo, and banner identity configuration."
+    },
+    "/config/branding": {
+      "schema": "AppBrandingConfig",
+      "description": "Global custom white-label branding and organization identity configuration (legacy path)."
+    }
+  }
+}
