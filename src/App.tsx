@@ -740,11 +740,11 @@ export default function App() {
                 <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5 flex items-center justify-between">
                   <span>Modul Intelijen & Eksplorasi Data</span>
                   <span className="text-[11px] text-[#0D5C75] font-semibold">
-                    {currentRole === 'super_admin' ? 'Akses Penuh Super Admin' : 'Akses Khusus Role Tim (3 Modul)'}
+                    {currentRole === 'super_admin' ? 'Akses Penuh Super Admin (4 Modul)' : 'Akses Eksplorasi Tim'}
                   </span>
                 </div>
 
-                <div className={`grid grid-cols-1 sm:grid-cols-2 ${currentRole === 'super_admin' ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-3`}>
+                <div className={`grid grid-cols-1 sm:grid-cols-2 ${currentRole === 'super_admin' ? 'lg:grid-cols-4' : 'lg:grid-cols-2'} gap-3`}>
                   
                   <div 
                     onClick={() => setCurrentTab('map')}
@@ -788,7 +788,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  {currentRole === 'super_admin' ? (
+                  {currentRole === 'super_admin' && (
                     <>
                       <div 
                         onClick={() => setCurrentTab('table')}
@@ -833,28 +833,6 @@ export default function App() {
                         </div>
                       </div>
                     </>
-                  ) : (
-                    <div 
-                      onClick={() => setIsSettingsOpen(true)}
-                      className="bg-indigo-50/60 border border-indigo-200/80 hover:border-indigo-400 rounded-xl p-4 cursor-pointer transition-all shadow-2xs hover:shadow-xs group flex flex-col justify-between"
-                    >
-                      <div>
-                        <div className="w-9 h-9 rounded-lg bg-indigo-600 text-white flex items-center justify-center mb-3 shadow-xs">
-                          <Users className="w-5 h-5" />
-                        </div>
-                        <h4 className="font-bold text-sm text-indigo-950 group-hover:text-indigo-700 transition-colors flex items-center gap-1.5">
-                          <span>Wewenang Role Tim</span>
-                          <span className="text-[9px] bg-indigo-200 text-indigo-800 font-bold px-1.5 py-0.2 rounded">Aktif</span>
-                        </h4>
-                        <p className="text-xs text-slate-600 mt-1">
-                          Role Anda difokuskan pada pemantauan visual summary, peta GIS, dan grafik analytics.
-                        </p>
-                      </div>
-                      <div className="mt-4 pt-3 border-t border-indigo-200/60 flex items-center justify-between text-xs font-bold text-indigo-700">
-                        <span>Pengaturan Role</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </div>
                   )}
 
                 </div>
