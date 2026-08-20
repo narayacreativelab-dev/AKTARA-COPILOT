@@ -139,29 +139,16 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="text-slate-400">/ {totalCount}</span>
             </div>
 
-            {/* Role Badge & Settings Quick Toggle */}
-            {onOpenSettings && (
+            {/* Role Badge & Settings Quick Toggle - Only for Super Admin */}
+            {currentRole === 'super_admin' && onOpenSettings && (
               <button
                 onClick={onOpenSettings}
-                title="Klik untuk membuka Pengaturan Role & Hak Akses"
-                className={`hidden md:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all border shadow-2xs cursor-pointer shrink-0 ${
-                  currentRole === 'super_admin'
-                    ? 'bg-[#FAF3DA] text-[#947518] border-[#F2E3B1] hover:bg-[#F2E3B1]'
-                    : 'bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100'
-                }`}
+                title="Buka Pengaturan Sistem & Role"
+                className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all border shadow-2xs cursor-pointer shrink-0 bg-[#FAF3DA] text-[#947518] border-[#F2E3B1] hover:bg-[#F2E3B1]"
               >
-                {currentRole === 'super_admin' ? (
-                  <>
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#947518]" />
-                    <span>Super Admin</span>
-                  </>
-                ) : (
-                  <>
-                    <Users className="w-3.5 h-3.5 text-indigo-600" />
-                    <span>Role Tim</span>
-                  </>
-                )}
-                <Sliders className="w-3 h-3 text-slate-400 ml-0.5" />
+                <ShieldCheck className="w-3.5 h-3.5 text-[#947518]" />
+                <span>Super Admin</span>
+                <Sliders className="w-3 h-3 text-[#947518]/70 ml-0.5" />
               </button>
             )}
 
@@ -260,11 +247,15 @@ export const Header: React.FC<HeaderProps> = ({
             {currentUser && (
               <div className="flex items-center gap-1.5 pl-1 sm:pl-2 border-l border-slate-200 shrink-0">
                 <div 
-                  onClick={onOpenSettings}
-                  className="hidden md:flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-50 border border-slate-200 text-left cursor-pointer hover:bg-slate-100 transition-colors shrink-0"
-                  title="Klik untuk membuka Pengaturan Profil"
+                  onClick={currentRole === 'super_admin' ? onOpenSettings : undefined}
+                  className={`hidden md:flex items-center gap-2 px-2 py-1 rounded-lg bg-slate-50 border border-slate-200 text-left shrink-0 ${
+                    currentRole === 'super_admin' ? 'cursor-pointer hover:bg-slate-100' : 'cursor-default'
+                  }`}
+                  title={currentRole === 'super_admin' ? "Buka Pengaturan Sistem & Profil" : `${currentUser.name} (${currentUser.department})`}
                 >
-                  <div className="w-6 h-6 rounded-full bg-[#0D5C75] text-white flex items-center justify-center font-bold text-[10px] shrink-0">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-[10px] text-white shrink-0 ${
+                    currentRole === 'super_admin' ? 'bg-[#0D5C75]' : 'bg-indigo-600'
+                  }`}>
                     {currentUser.name.charAt(0)}
                   </div>
                   <div className="min-w-0 max-w-[120px]">

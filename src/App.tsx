@@ -991,15 +991,9 @@ export default function App() {
                 <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-2.5">
                   <button
                     onClick={() => setCurrentTab('summary')}
-                    className="w-full sm:w-auto px-4 py-2 bg-[#0D5C75] hover:bg-[#07394A] text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                    className="w-full sm:w-auto px-5 py-2.5 bg-[#0D5C75] hover:bg-[#07394A] text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs"
                   >
                     Kembali ke Executive Summary
-                  </button>
-                  <button
-                    onClick={() => setIsSettingsOpen(true)}
-                    className="w-full sm:w-auto px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors cursor-pointer"
-                  >
-                    Buka Pengaturan Role
                   </button>
                 </div>
               </div>
@@ -1061,15 +1055,9 @@ export default function App() {
                 <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-2.5">
                   <button
                     onClick={() => setCurrentTab('summary')}
-                    className="w-full sm:w-auto px-4 py-2 bg-[#0D5C75] hover:bg-[#07394A] text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                    className="w-full sm:w-auto px-5 py-2.5 bg-[#0D5C75] hover:bg-[#07394A] text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-xs"
                   >
                     Kembali ke Executive Summary
-                  </button>
-                  <button
-                    onClick={() => setIsSettingsOpen(true)}
-                    className="w-full sm:w-auto px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors cursor-pointer"
-                  >
-                    Buka Pengaturan Role
                   </button>
                 </div>
               </div>

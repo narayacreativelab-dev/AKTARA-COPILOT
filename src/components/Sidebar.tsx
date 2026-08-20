@@ -221,16 +221,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
 
             <div className="flex items-center gap-1">
-              <button
-                onClick={() => {
-                  onOpenSettings();
-                  onCloseMobile();
-                }}
-                title="Buka Pengaturan Role & Sistem"
-                className="p-1.5 text-slate-500 hover:text-[#0D5C75] hover:bg-[#EBF4F7] rounded-lg transition-colors border border-slate-200/80 cursor-pointer"
-              >
-                <Sliders className="w-3.5 h-3.5" />
-              </button>
+              {currentRole === 'super_admin' && (
+                <button
+                  onClick={() => {
+                    onOpenSettings();
+                    onCloseMobile();
+                  }}
+                  title="Buka Pengaturan Role & Sistem"
+                  className="p-1.5 text-slate-500 hover:text-[#0D5C75] hover:bg-[#EBF4F7] rounded-lg transition-colors border border-slate-200/80 cursor-pointer"
+                >
+                  <Sliders className="w-3.5 h-3.5" />
+                </button>
+              )}
               {onLogout && (
                 <button
                   onClick={() => {
@@ -246,31 +248,35 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-1.5 pt-1">
-            <button
-              onClick={() => {
-                onOpenSettings();
-                onCloseMobile();
-              }}
-              className="py-1.5 px-2 text-[10.5px] font-bold text-slate-700 hover:text-[#0D5C75] bg-slate-50 hover:bg-[#EBF4F7] border border-slate-200 rounded-lg transition-colors flex items-center justify-center gap-1 cursor-pointer"
-            >
-              <Sliders className="w-3 h-3 text-[#0D5C75]" />
-              <span>Pengaturan</span>
-            </button>
+          {(currentRole === 'super_admin' || onOpenGoogleDrive) && (
+            <div className={`pt-1 ${currentRole === 'super_admin' && onOpenGoogleDrive ? 'grid grid-cols-2 gap-1.5' : 'space-y-1'}`}>
+              {currentRole === 'super_admin' && (
+                <button
+                  onClick={() => {
+                    onOpenSettings();
+                    onCloseMobile();
+                  }}
+                  className="w-full py-1.5 px-2 text-[10.5px] font-bold text-slate-700 hover:text-[#0D5C75] bg-slate-50 hover:bg-[#EBF4F7] border border-slate-200 rounded-lg transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                >
+                  <Sliders className="w-3 h-3 text-[#0D5C75]" />
+                  <span>Pengaturan</span>
+                </button>
+              )}
 
-            {onOpenGoogleDrive && (
-              <button
-                onClick={() => {
-                  onOpenGoogleDrive();
-                  onCloseMobile();
-                }}
-                className="py-1.5 px-2 text-[10.5px] font-bold text-[#0D5C75] hover:text-[#07394A] bg-[#EBF4F7] hover:bg-[#D8ECF2] border border-[#CCE3EA] rounded-lg transition-colors flex items-center justify-center gap-1 cursor-pointer"
-              >
-                <HardDrive className="w-3 h-3 text-[#0D5C75]" />
-                <span>Google Drive</span>
-              </button>
-            )}
-          </div>
+              {onOpenGoogleDrive && (
+                <button
+                  onClick={() => {
+                    onOpenGoogleDrive();
+                    onCloseMobile();
+                  }}
+                  className="w-full py-1.5 px-2 text-[10.5px] font-bold text-[#0D5C75] hover:text-[#07394A] bg-[#EBF4F7] hover:bg-[#D8ECF2] border border-[#CCE3EA] rounded-lg transition-colors flex items-center justify-center gap-1 cursor-pointer"
+                >
+                  <HardDrive className="w-3 h-3 text-[#0D5C75]" />
+                  <span>Google Drive</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
         {/* AI Copilot (Only if super_admin) */}

@@ -95,7 +95,7 @@ export const SettingsRoleModal: React.FC<SettingsRoleModalProps> = ({
   onOpenBulkUpload,
   onOpenAddSchool
 }) => {
-  const [activeTab, setActiveTab] = useState<'branding' | 'database' | 'roles' | 'matrix' | 'members'>('branding');
+  const [activeTab, setActiveTab] = useState<'branding' | 'database' | 'matrix' | 'members'>('branding');
   
   // User Management State (Firestore users/{uid} & Firebase Auth)
   const [usersList, setUsersList] = useState<AppUserRecord[]>(() => {
@@ -740,74 +740,116 @@ export const SettingsRoleModal: React.FC<SettingsRoleModalProps> = ({
           </button>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex border-b border-slate-200 bg-slate-50 px-4 sm:px-6 pt-3 gap-2 overflow-x-auto sticky top-[80px] z-30">
-          <button
-            onClick={() => setActiveTab('branding')}
-            className={`px-4 py-2.5 text-xs font-semibold rounded-t-xl transition-all border-b-2 flex items-center gap-2 shrink-0 cursor-pointer whitespace-nowrap ${
-              activeTab === 'branding'
-                ? 'bg-white text-[#0D5C75] border-[#0D5C75] shadow-xs'
-                : 'text-slate-600 hover:text-slate-900 border-transparent hover:bg-slate-100/70'
-            }`}
-          >
-            <Palette className="w-4 h-4 text-[#D4AF37]" />
-            <span>Logo & Headline Banner</span>
-          </button>
+        {currentRole !== 'super_admin' ? (
+          <div className="flex-1 overflow-y-auto p-6 sm:p-10 flex flex-col items-center justify-center text-center">
+            <div className="max-w-lg w-full bg-slate-50 border border-slate-200 rounded-2xl p-6 sm:p-8 space-y-5 shadow-xs">
+              <div className="w-16 h-16 rounded-2xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center mx-auto shadow-2xs">
+                <Lock className="w-8 h-8" />
+              </div>
+              
+              <div className="space-y-2">
+                <h3 className="text-lg font-extrabold text-slate-900 leading-snug">
+                  Akses Terbatas: Hanya Super Admin yang dapat mengubah konfigurasi
+                </h3>
+                <p className="text-xs text-slate-600 leading-relaxed max-w-md mx-auto">
+                  Akun Anda saat ini masuk dengan hak akses <strong>{currentUser ? `${currentUser.name} (${currentUser.role === 'super_admin' ? 'Super Admin' : 'Role Tim'})` : 'Role Tim'}</strong>. Konfigurasi branding, manajemen database sekolah, dan pengaturan wewenang tim dikunci khusus untuk <strong>Super Admin</strong>.
+                </p>
+              </div>
 
-          <button
-            onClick={() => setActiveTab('database')}
-            className={`px-4 py-2.5 text-xs font-semibold rounded-t-xl transition-all border-b-2 flex items-center gap-2 shrink-0 cursor-pointer whitespace-nowrap ${
-              activeTab === 'database'
-                ? 'bg-white text-[#0D5C75] border-[#0D5C75] shadow-xs'
-                : 'text-slate-600 hover:text-slate-900 border-transparent hover:bg-slate-100/70'
-            }`}
-          >
-            <Database className="w-4 h-4 text-emerald-600" />
-            <span>Database Sekolah ({schoolsCount})</span>
-          </button>
+              {currentUser && (
+                <div className="p-3.5 bg-white border border-slate-200 rounded-xl text-left text-xs space-y-1.5 shadow-2xs">
+                  <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Identitas Pengguna Aktif:</div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="font-bold text-slate-800">{currentUser.name}</div>
+                      <div className="text-slate-500 text-[11px]">{currentUser.email} • {currentUser.department}</div>
+                    </div>
+                    <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+                      Role Tim
+                    </span>
+                  </div>
+                </div>
+              )}
 
-          <button
-            onClick={() => setActiveTab('roles')}
-            className={`px-4 py-2.5 text-xs font-semibold rounded-t-xl transition-all border-b-2 flex items-center gap-2 shrink-0 cursor-pointer whitespace-nowrap ${
-              activeTab === 'roles'
-                ? 'bg-white text-[#0D5C75] border-[#0D5C75] shadow-xs'
-                : 'text-slate-600 hover:text-slate-900 border-transparent hover:bg-slate-100/70'
-            }`}
-          >
-            <ShieldCheck className="w-4 h-4 text-[#0D5C75]" />
-            <span>Role Aktif ({currentRole === 'super_admin' ? 'Super Admin' : 'Role Tim'})</span>
-          </button>
+              <div className="pt-2 flex items-center justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="px-5 py-2.5 bg-[#0D5C75] hover:bg-[#07394A] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer"
+                >
+                  Kembali ke Dashboard
+                </button>
+                {onLogout && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      onLogout();
+                    }}
+                    className="px-4 py-2.5 bg-white hover:bg-red-50 text-red-700 hover:text-red-800 border border-red-200 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center gap-1.5"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>Keluar (Logout)</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* Tab Navigation */}
+            <div className="flex border-b border-slate-200 bg-slate-50 px-4 sm:px-6 pt-3 gap-2 overflow-x-auto sticky top-[80px] z-30">
+              <button
+                onClick={() => setActiveTab('branding')}
+                className={`px-4 py-2.5 text-xs font-semibold rounded-t-xl transition-all border-b-2 flex items-center gap-2 shrink-0 cursor-pointer whitespace-nowrap ${
+                  activeTab === 'branding'
+                    ? 'bg-white text-[#0D5C75] border-[#0D5C75] shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 border-transparent hover:bg-slate-100/70'
+                }`}
+              >
+                <Palette className="w-4 h-4 text-[#D4AF37]" />
+                <span>Logo & Headline Banner</span>
+              </button>
 
-          <button
-            onClick={() => setActiveTab('matrix')}
-            className={`px-4 py-2.5 text-xs font-semibold rounded-t-xl transition-all border-b-2 flex items-center gap-2 shrink-0 cursor-pointer whitespace-nowrap ${
-              activeTab === 'matrix'
-                ? 'bg-white text-[#0D5C75] border-[#0D5C75] shadow-xs'
-                : 'text-slate-600 hover:text-slate-900 border-transparent hover:bg-slate-100/70'
-            }`}
-          >
-            <Sliders className="w-4 h-4 text-slate-500" />
-            <span>Matriks Izin</span>
-          </button>
+              <button
+                onClick={() => setActiveTab('database')}
+                className={`px-4 py-2.5 text-xs font-semibold rounded-t-xl transition-all border-b-2 flex items-center gap-2 shrink-0 cursor-pointer whitespace-nowrap ${
+                  activeTab === 'database'
+                    ? 'bg-white text-[#0D5C75] border-[#0D5C75] shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 border-transparent hover:bg-slate-100/70'
+                }`}
+              >
+                <Database className="w-4 h-4 text-emerald-600" />
+                <span>Database Sekolah ({schoolsCount})</span>
+              </button>
 
-          <button
-            onClick={() => setActiveTab('members')}
-            className={`px-4 py-2.5 text-xs font-semibold rounded-t-xl transition-all border-b-2 flex items-center gap-2 shrink-0 cursor-pointer whitespace-nowrap ${
-              activeTab === 'members'
-                ? 'bg-white text-[#0D5C75] border-[#0D5C75] shadow-xs'
-                : 'text-slate-600 hover:text-slate-900 border-transparent hover:bg-slate-100/70'
-            }`}
-          >
-            <Users className="w-4 h-4 text-[#0D5C75]" />
-            <span>Manajemen Pengguna & Akses Tim ({usersList.length})</span>
-            {currentRole !== 'super_admin' && (
-              <Lock className="w-3 h-3 text-slate-400" />
-            )}
-          </button>
-        </div>
+              <button
+                onClick={() => setActiveTab('matrix')}
+                className={`px-4 py-2.5 text-xs font-semibold rounded-t-xl transition-all border-b-2 flex items-center gap-2 shrink-0 cursor-pointer whitespace-nowrap ${
+                  activeTab === 'matrix'
+                    ? 'bg-white text-[#0D5C75] border-[#0D5C75] shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 border-transparent hover:bg-slate-100/70'
+                }`}
+              >
+                <Sliders className="w-4 h-4 text-slate-500" />
+                <span>Matriks Izin Role</span>
+              </button>
 
-        {/* Modal Body */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-5">
+              <button
+                onClick={() => setActiveTab('members')}
+                className={`px-4 py-2.5 text-xs font-semibold rounded-t-xl transition-all border-b-2 flex items-center gap-2 shrink-0 cursor-pointer whitespace-nowrap ${
+                  activeTab === 'members'
+                    ? 'bg-white text-[#0D5C75] border-[#0D5C75] shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 border-transparent hover:bg-slate-100/70'
+                }`}
+              >
+                <Users className="w-4 h-4 text-[#0D5C75]" />
+                <span>Manajemen Pengguna & Akses Tim ({usersList.length})</span>
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="flex-1 overflow-y-auto p-5 space-y-5">
           
           {/* TAB 0: LOGO & HEADLINE BANNER CUSTOMIZATION */}
           {activeTab === 'branding' && (
@@ -1436,218 +1478,6 @@ export const SettingsRoleModal: React.FC<SettingsRoleModalProps> = ({
                     )}
                   </div>
                 </div>
-              </div>
-
-            </div>
-          )}
-          
-          {/* TAB 1: ROLES SELECTION & SWITCHER */}
-          {activeTab === 'roles' && (
-            <div className="space-y-4">
-              
-              {/* Authenticated User Session Card */}
-              {currentUser && (
-                <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-[#0D5C75] text-white flex items-center justify-center font-bold text-sm">
-                      {currentUser.name.charAt(0)}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-extrabold text-sm text-slate-900">{currentUser.name}</span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FAF3DA] text-[#947518] border border-[#F2E3B1]">
-                          {currentUser.role === 'super_admin' ? 'Super Admin' : 'Role Tim'}
-                        </span>
-                      </div>
-                      <div className="text-xs text-slate-500">
-                        {currentUser.email} • {currentUser.department}
-                      </div>
-                    </div>
-                  </div>
-
-                  {onLogout && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        onClose();
-                        onLogout();
-                      }}
-                      className="px-3.5 py-1.5 text-xs font-bold text-red-700 hover:text-white bg-red-50 hover:bg-red-600 border border-red-200 rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer self-start sm:self-auto"
-                    >
-                      <LogOut className="w-3.5 h-3.5" />
-                      <span>Keluar (Logout)</span>
-                    </button>
-                  )}
-                </div>
-              )}
-
-              <div className="bg-[#FAF3DA] border border-[#F2E3B1] rounded-xl p-3.5 flex items-start gap-3">
-                <AlertCircle className="w-5 h-5 text-[#947518] shrink-0 mt-0.5" />
-                <div className="text-xs text-slate-700 space-y-1">
-                  <p className="font-bold text-[#07394A]">
-                    Mode Simulasi Role Pengguna Saat Ini
-                  </p>
-                  <p>
-                    Anda dapat beralih role secara instan di bawah ini untuk menguji bagaimana antarmuka sistem menyesuaikan hak akses pengguna secara real-time.
-                  </p>
-                </div>
-              </div>
-
-              {/* Role Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
-                {/* 1. Super Admin Card */}
-                <div 
-                  onClick={() => onChangeRole('super_admin')}
-                  className={`border-2 rounded-2xl p-5 cursor-pointer transition-all space-y-4 relative ${
-                    currentRole === 'super_admin'
-                      ? 'border-[#0D5C75] bg-[#EBF4F7]/40 shadow-sm'
-                      : 'border-slate-200 hover:border-slate-300 bg-white'
-                  }`}
-                >
-                  {currentRole === 'super_admin' && (
-                    <div className="absolute top-3.5 right-3.5 bg-[#0D5C75] text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                      <Check className="w-3 h-3 text-[#D4AF37]" />
-                      <span>Role Aktif</span>
-                    </div>
-                  )}
-
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-[#0D5C75] text-white flex items-center justify-center font-bold shadow-xs">
-                      <ShieldCheck className="w-6 h-6 text-[#D4AF37]" />
-                    </div>
-                    <div>
-                      <h4 className="font-extrabold text-base text-slate-900">Super Admin</h4>
-                      <p className="text-xs text-slate-500 font-medium">Akses Penuh (100% Fitur & Data)</p>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Wewenang tertinggi untuk pimpinan eksekutif dan administrator data utama. Memiliki izin membaca, mengunggah data masal, mengedit, menghapus, serta menggunakan AI Copilot.
-                  </p>
-
-                  <div className="pt-2 border-t border-slate-200/80 space-y-1.5 text-xs">
-                    <div className="font-bold text-slate-700 text-[11px] uppercase tracking-wider">Cakupan Akses:</div>
-                    <div className="grid grid-cols-2 gap-1 text-[11.5px] text-slate-600">
-                      <div className="flex items-center gap-1.5 text-emerald-700 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>Executive Summary</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-emerald-700 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>Peta Spasial (GIS)</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-emerald-700 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>Data Analytics (BI)</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-emerald-700 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>Database Sekolah</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-emerald-700 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>AI Copilot Assistant</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-emerald-700 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>Upload & Edit Data</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onChangeRole('super_admin');
-                    }}
-                    className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
-                      currentRole === 'super_admin'
-                        ? 'bg-[#0D5C75] text-white shadow-2xs'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                    }`}
-                  >
-                    {currentRole === 'super_admin' ? 'Sedang Aktif' : 'Pilih Super Admin'}
-                  </button>
-                </div>
-
-                {/* 2. Role Tim Card */}
-                <div 
-                  onClick={() => onChangeRole('role_tim')}
-                  className={`border-2 rounded-2xl p-5 cursor-pointer transition-all space-y-4 relative ${
-                    currentRole === 'role_tim'
-                      ? 'border-indigo-600 bg-indigo-50/40 shadow-sm'
-                      : 'border-slate-200 hover:border-slate-300 bg-white'
-                  }`}
-                >
-                  {currentRole === 'role_tim' && (
-                    <div className="absolute top-3.5 right-3.5 bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                      <Check className="w-3 h-3 text-white" />
-                      <span>Role Aktif</span>
-                    </div>
-                  )}
-
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-xs">
-                      <Users className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h4 className="font-extrabold text-base text-slate-900">Role Tim</h4>
-                      <p className="text-xs text-slate-500 font-medium">Akses Terfokus (3 Modul Utama)</p>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Dikhususkan untuk tim operasional & surveyor lapangan yang bertugas memantau visualisasi spasial, statistik wilayah, dan KPI tanpa mengubah struktur database.
-                  </p>
-
-                  <div className="pt-2 border-t border-slate-200/80 space-y-1.5 text-xs">
-                    <div className="font-bold text-slate-700 text-[11px] uppercase tracking-wider">Cakupan Akses:</div>
-                    <div className="grid grid-cols-2 gap-1 text-[11.5px] text-slate-600">
-                      <div className="flex items-center gap-1.5 text-emerald-700 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>Executive Summary</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-emerald-700 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>Peta Spasial (GIS)</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-emerald-700 font-medium">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>Data Analytics (BI)</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-slate-400 line-through">
-                        <XCircle className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span>Database Sekolah</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-slate-400 line-through">
-                        <XCircle className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span>AI Copilot Assistant</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-slate-400 line-through">
-                        <XCircle className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                        <span>Upload & Edit Data</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onChangeRole('role_tim');
-                    }}
-                    className={`w-full py-2 px-3 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
-                      currentRole === 'role_tim'
-                        ? 'bg-indigo-600 text-white shadow-2xs'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                    }`}
-                  >
-                    {currentRole === 'role_tim' ? 'Sedang Aktif' : 'Pilih Role Tim'}
-                  </button>
-                </div>
-
               </div>
 
             </div>
@@ -2360,6 +2190,8 @@ export const SettingsRoleModal: React.FC<SettingsRoleModalProps> = ({
           )}
 
         </div>
+        </>
+        )}
 
         {/* Footer */}
         <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between flex-wrap gap-2 relative z-20">
