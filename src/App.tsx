@@ -7,7 +7,7 @@ import { ExecutiveSummaryCharts } from './components/ExecutiveSummaryCharts';
 import { MapView } from './components/MapView';
 import { AnalyticsView } from './components/AnalyticsView';
 import { TableView } from './components/TableView';
-import { SalesPerformanceDashboard } from './components/SalesPerformanceDashboard';
+import { SalesIntelligenceView } from './views/SalesIntelligenceView';
 import { AiCopilotDrawer } from './components/AiCopilotDrawer';
 import { SchoolDossierModal } from './components/SchoolDossierModal';
 import { AddSchoolModal } from './components/AddSchoolModal';
@@ -758,15 +758,15 @@ export default function App() {
                         <Trophy className="w-5 h-5 text-white" />
                       </div>
                       <h4 className="font-bold text-sm text-slate-900 group-hover:text-amber-700 transition-colors flex items-center gap-1.5">
-                        <span>Pencapaian Sales</span>
-                        <span className="text-[9px] bg-amber-200 text-amber-900 font-extrabold px-1.5 py-0.2 rounded">TOP</span>
+                        <span>Sales Intelligence</span>
+                        <span className="text-[9px] bg-amber-200 text-amber-900 font-extrabold px-1.5 py-0.2 rounded">LEADERBOARD</span>
                       </h4>
                       <p className="text-xs text-slate-500 mt-1">
-                        Leaderboard tim lapangan, pipeline funnel konversi, dan progress kuota target wilayah.
+                        Leaderboard tim lapangan, pipeline funnel konversi B2B/B2G, dan progress target kuota wilayah.
                       </p>
                     </div>
                     <div className="mt-4 pt-3 border-t border-amber-200/60 flex items-center justify-between text-xs font-bold text-amber-800">
-                      <span>Buka Leaderboard</span>
+                      <span>Buka Sales Intelligence</span>
                       <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
@@ -969,7 +969,7 @@ export default function App() {
           )}
 
           {currentTab === 'sales' && (
-            <SalesPerformanceDashboard
+            <SalesIntelligenceView
               schools={schools}
               teamMembers={teamMembers}
               currentUser={currentUser}

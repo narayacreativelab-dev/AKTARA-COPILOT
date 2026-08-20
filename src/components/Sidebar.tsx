@@ -80,8 +80,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       id: 'sales' as const,
-      label: 'Pencapaian Sales',
-      subtitle: 'Leaderboard & Pipeline',
+      label: 'Sales Intelligence',
+      subtitle: 'Canvassing & Leaderboard',
       icon: Trophy,
       badge: 'LEADERBOARD',
       badgeColor: 'bg-amber-100 text-amber-800 border border-amber-300',

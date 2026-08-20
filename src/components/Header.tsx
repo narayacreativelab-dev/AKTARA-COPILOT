@@ -77,7 +77,7 @@ export const Header: React.FC<HeaderProps> = ({
       case 'analytics':
         return { title: 'Data Analytics (BI)', icon: BarChart3, desc: 'Distribusi statistik, rasio gender, akreditasi, dan segmentasi kejuruan' };
       case 'sales':
-        return { title: 'Pencapaian Sales & Pipeline', icon: Trophy, desc: 'Leaderboard performa tim, konversi pipeline kemitraan, dan progres target wilayah' };
+        return { title: 'Sales Intelligence & Canvassing', icon: Trophy, desc: 'Leaderboard performa tim, konversi pipeline kemitraan, dan progres target wilayah' };
       case 'table':
         return { title: 'Database Direktori Sekolah', icon: TableIcon, desc: 'Tabel data komprehensif, kontak kepala sekolah, dan status kemitraan' };
       case 'copilot':
